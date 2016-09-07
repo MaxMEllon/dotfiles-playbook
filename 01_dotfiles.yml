@@ -1,0 +1,19 @@
+# vim:ft=ansible
+
+---
+- hosts: all
+  tasks:
+    - name: (dotfiles) exist check
+      shell: test -e $HOME/.dotfiles
+      register: exist_check
+      ignore_errors: yes
+    
+    
+    - name: (dotfiles) git clone
+      git:
+        repo: 'https://github.com/MaxMEllon/.dotfiles'
+        dest: $HOME/.dotfiles
+      when: exist_check|failed
+    
+    - name: (dotfiles) install
+      shell: cd $HOME/.dotfiles && bash init.sh $HOME/.dotfiles
