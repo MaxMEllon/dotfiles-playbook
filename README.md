@@ -1,5 +1,7 @@
 # dotfiles-playbook
 
+[![Build Status](https://travis-ci.org/MaxMEllon/dotfiles-playbook.svg?branch=master)](https://travis-ci.org/MaxMEllon/dotfiles-playbook)
+
 About
 ---
 
