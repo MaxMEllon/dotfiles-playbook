@@ -1,0 +1,18 @@
+language: ruby
+rvm: 2.2.2 # あえて ansible で導入するrubyとは別のバージョンを
+sudo: true
+
+os:
+  - linux
+
+install: bundle install -j 4
+cache:
+  directories: vendor/bundle
+
+before_script:
+  - sudo apt-get install ansible
+  - echo 127.0.0.1 > hosts
+
+script:
+  - ansible-playbook -i hosts playbook.yml --connection=local
+  - bundle exec rspec
