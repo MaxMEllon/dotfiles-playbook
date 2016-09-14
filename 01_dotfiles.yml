@@ -2,14 +2,9 @@
 
 ---
 - hosts: all
-  pre_tasks:
-    - name: (env) Get ansible_user home directory
-      shell: 'getent passwd "{{ansible_ssh_user}}" | cut -d: -f6'
-      register: ansible_home_result
-
   tasks:
     - name: (dotfiles) exist check
-      shell: 'test -e "{{ansible_home_result.stdout}}"/.dotfiles'
+      shell: 'test -e "{{ansible_env.HOME}}"/.dotfiles'
       register: exist_check
       ignore_errors: yes
     
@@ -17,9 +12,9 @@
     - name: (dotfiles) git clone
       git:
         repo: 'https://github.com/MaxMEllon/.dotfiles'
-        dest: '{{ansible_home_result.stdout}}/.dotfiles'
+        dest: '{{ansible_env.HOME}}/.dotfiles'
         version: master
       when: exist_check|failed
     
     - name: (dotfiles) install
-      shell: 'cd "{{ansible_home_result.stdout}}"/.dotfiles && bash init.sh "{{ansible_home_result.stdout}}"/.dotfiles'
+      shell: 'cd "{{ansible_env.HOME}}"/.dotfiles && bash init.sh "{{ansible_env.HOME}}"/.dotfiles'
